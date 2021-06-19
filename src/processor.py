@@ -64,5 +64,5 @@ class DataObject:
 dao = DataObject(file_name)
 dao.sort("yml")
 
-dao.printobject(False)
-# dao.printobject(True)
+# dao.printobject(False)
+dao.printobject(True)
