@@ -5,19 +5,19 @@ import json
 
 file_name = "country.json"
 file_name = "colors.json"
-file_object = open(file_name)
-json_object = json.load(file_object)
 
 class DataObject:
 
-    def __init__(self, data):
-        self.dataobject = data
+    def __init__(self, file):
+        self.file_name = file
+        self.file = open(self.file_name)
+        self.dataobject = json.load(self.file)
         self.print = []
         self.dash = "- "
         self.tab = "\t"
         self.tabdash = "\t- "
-        self.print.append(str(data))
         self.print.append("DataObject")
+        self.print.append(str(self.dataobject))
 
     def convert_to_json(self, n):
         self.print.append("convert_to_json")
@@ -46,11 +46,20 @@ class DataObject:
 
     def count_items(self):
         # list total number of data items
-        self.print.append("count_items")
+        self.print.append(self.tabdash + str(len(self.dataobject))+" items")
+        
 
     def count_branch_level(self):
         # list number of sub levels within dictionary
         self.print.append("count_branch_level")
+
+    def printasstr(self):
+        for attribute, value in self.dataobject.items():		
+            print(attribute, str(value))
+      #      self.print.append("count_branch_level")
+
+    def iterate(self):
+        self.dataobject
 
     def printobject(self, n):
         self.print.append("printobject")
@@ -62,7 +71,9 @@ class DataObject:
         self.print = []
 
 dao = DataObject(file_name)
-dao.sort("yml")
+dao.count_items()
 
-# dao.printobject(False)
-dao.printobject(True)
+dao.printobject(False)
+# dao.printobject(True)
+
+# dao.printasstr()
