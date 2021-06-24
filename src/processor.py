@@ -64,11 +64,9 @@ class DataObject:
         return t
 
     def iterate(self, data):
-        i = 0
+
         if isinstance(data, list):
-            i = len(data)
-            while i > 0:
-                i -= 1
+            for i in range(len(data)):
                 if isinstance(data[i] ,str) or isinstance(data[i] , int):
                     self.print.append(self.tabdash + "VALUE LIST: " + str(data[i])) 
                     self.count += 1
@@ -92,7 +90,6 @@ class DataObject:
         else: 
              self.print.append(self.tab + 'object is NOT a dictionary')     
         return self.count
-           
 
     def count_branch_level(self):
         # list number of sub levels within dictionary
