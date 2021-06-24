@@ -3,10 +3,12 @@
 
 import json
 
-file_name = "country.json"
-file_name = "colors.json"
-# file_name = "color.json"
-# file_name = "porsche.json"
+data_dir = "../data/"
+# file_name = data_dir + "country.json"
+# file_name = data_dir + "color.json"
+# file_name = data_dir + "colors.json"
+# file_name = data_dir + "porsche.json"
+file_name = data_dir + "cars.json"
 
 class DataObject:
 
@@ -49,7 +51,6 @@ class DataObject:
             self.print.append(self.tabdash+"sort descending")
 
     def validate(self, data):
-        self.print.append("validate")
         t = None
         if isinstance(data, dict):
             t = "dict"
@@ -63,11 +64,9 @@ class DataObject:
         return t
 
     def iterate(self, data):
-  #      self.print.append("iterate")
         i = 0
         if isinstance(data, list):
             i = len(data)
-   #         self.print.append(self.tab + " >> iterate = " + str(i)+ " items list")
             while i > 0:
                 i -= 1
                 if isinstance(data[i] ,str) or isinstance(data[i] , int):
@@ -77,7 +76,6 @@ class DataObject:
                     self.iterate(data[i])
         elif isinstance(data, dict):
             i = len(data.keys())
-  #          self.print.append(self.tab + " >> iterate = " + str(i)+ " items dict")
             for (k, v) in data.items():
                 self.print.append(self.tabdash + "KEY DICT: " + str(k)) 
                 if isinstance(v, str):
@@ -87,7 +85,6 @@ class DataObject:
                     self.iterate(v)
  
     def count_items(self):
-        self.print.append("count_items")
         data = self.dataobject
 
         if isinstance(data, dict) or isinstance(data, list):
@@ -102,7 +99,6 @@ class DataObject:
         self.print.append("count_branch_level")
 
     def printasstr(self):
-        self.print.append("printasstr")
         for attribute, value in self.dataobject.items():		
             self.print.append(attribute + str(value))
        #     print(attribute, str(value))
