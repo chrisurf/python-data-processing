@@ -5,6 +5,8 @@ import json
 
 file_name = "country.json"
 file_name = "colors.json"
+# file_name = "color.json"
+# file_name = "porsche.json"
 
 class DataObject:
 
@@ -12,12 +14,14 @@ class DataObject:
         self.file_name = file
         self.file = open(self.file_name)
         self.dataobject = json.load(self.file)
-        self.print = []
+        
+        # Testing string variable
+        self.count = 0              # items counter
+        self.print = []             # test string
         self.dash = "- "
         self.tab = "\t"
         self.tabdash = "\t- "
         self.print.append("DataObject")
-        self.print.append(str(self.dataobject))
 
     def convert_to_json(self, n):
         self.print.append("convert_to_json")
@@ -44,22 +48,64 @@ class DataObject:
         else: # false: sort descending
             self.print.append(self.tabdash+"sort descending")
 
+    def validate(self, data):
+        self.print.append("validate")
+        t = None
+        if isinstance(data, dict):
+            t = "dict"
+            self.print.append(self.tab + ' >> validate = object is a ' + t)
+        if isinstance(data, list):
+            t = "list"
+            self.print.append(self.tab + ' >> validate = object is a ' + t)
+        if isinstance(data, str):
+            t = "str"
+            self.print.append(self.tab + ' >> validate = object is a ' + t)
+        return t
+
+    def iterate(self, data):
+  #      self.print.append("iterate")
+        i = 0
+        if isinstance(data, list):
+            i = len(data)
+   #         self.print.append(self.tab + " >> iterate = " + str(i)+ " items list")
+            while i > 0:
+                i -= 1
+                if isinstance(data[i] ,str) or isinstance(data[i] , int):
+                    self.print.append(self.tabdash + "VALUE LIST: " + str(data[i])) 
+                    self.count += 1
+                else:
+                    self.iterate(data[i])
+        elif isinstance(data, dict):
+            i = len(data.keys())
+  #          self.print.append(self.tab + " >> iterate = " + str(i)+ " items dict")
+            for (k, v) in data.items():
+                self.print.append(self.tabdash + "KEY DICT: " + str(k)) 
+                if isinstance(v, str):
+                    self.print.append(self.tabdash + "VALUE DICT: " + str(v)) 
+                    self.count += 1
+                else:
+                    self.iterate(v)
+ 
     def count_items(self):
-        # list total number of data items
-        self.print.append(self.tabdash + str(len(self.dataobject))+" items")
-        
+        self.print.append("count_items")
+        data = self.dataobject
+
+        if isinstance(data, dict) or isinstance(data, list):
+            self.iterate(data)
+        else: 
+             self.print.append(self.tab + 'object is NOT a dictionary')     
+        return self.count
+           
 
     def count_branch_level(self):
         # list number of sub levels within dictionary
         self.print.append("count_branch_level")
 
     def printasstr(self):
+        self.print.append("printasstr")
         for attribute, value in self.dataobject.items():		
-            print(attribute, str(value))
-      #      self.print.append("count_branch_level")
-
-    def iterate(self):
-        self.dataobject
+            self.print.append(attribute + str(value))
+       #     print(attribute, str(value))
 
     def printobject(self, n):
         self.print.append("printobject")
@@ -71,9 +117,11 @@ class DataObject:
         self.print = []
 
 dao = DataObject(file_name)
-dao.count_items()
+print(dao.count_items())
+
+# dao.printasstr()
 
 dao.printobject(False)
 # dao.printobject(True)
 
-# dao.printasstr()
+
