@@ -19,6 +19,7 @@ class DataObject:
         
         # Testing string variable
         self.count = 0              # items counter
+        self.index = []
         self.print = []             # test string
         self.dash = "- "
         self.tab = "\t"
@@ -38,10 +39,10 @@ class DataObject:
 
     def find(self, n):
         self.print.append("find")
-        if n in self.dataobject:
-            self.print.append(self.tabdash+"found string")
+        if n in self.index:
+            self.print.append(self.tabdash+ n +" < found in data set.")
         else:
-            self.print.append(self.tabdash+"sting not found")
+            self.print.append(self.tabdash+ n + " < not found in data set.")
 
     def sort(self, n):
         self.print.append("sort")
@@ -68,7 +69,8 @@ class DataObject:
         if isinstance(data, list):
             for i in range(len(data)):
                 if isinstance(data[i] ,str) or isinstance(data[i] , int):
-                    self.print.append(self.tabdash + "VALUE LIST: " + str(data[i])) 
+                    self.print.append(self.tabdash + "VALUE LIST: " + str(data[i]))
+                    self.index.append(str(data[i]))
                     self.count += 1
                 else:
                     self.iterate(data[i])
@@ -78,6 +80,7 @@ class DataObject:
                 self.print.append(self.tabdash + "KEY DICT: " + str(k)) 
                 if isinstance(v, str):
                     self.print.append(self.tabdash + "VALUE DICT: " + str(v)) 
+                    self.index.append(str(v))
                     self.count += 1
                 else:
                     self.iterate(v)
@@ -113,6 +116,7 @@ dao = DataObject(file_name)
 print(dao.count_items())
 
 # dao.printasstr()
+dao.find("Rover")
 
 dao.printobject(False)
 # dao.printobject(True)
