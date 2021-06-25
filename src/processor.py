@@ -2,21 +2,19 @@
 # #-*- coding: utf-8 -*-
 
 import json
+import yaml
 
 data_dir = "../data/"
 # file_name = data_dir + "country.json"
 # file_name = data_dir + "color.json"
 # file_name = data_dir + "colors.json"
 # file_name = data_dir + "porsche.json"
-file_name = data_dir + "cars.json"
+# file_name = data_dir + "cars.json"
+file_name = data_dir + "user.yaml"
 
 class DataObject:
 
-    def __init__(self, file):
-        self.file_name = file
-        self.file = open(self.file_name)
-        self.dataobject = json.load(self.file)
-        
+    def __init__(self, file, type = None):
         # Testing string variable
         self.count = 0              # items counter
         self.index = []
@@ -25,15 +23,28 @@ class DataObject:
         self.tab = "\t"
         self.tabdash = "\t- "
         self.print.append("DataObject")
+        self.file_name = file
 
+        if 0 < self.file_name.lower().find("json"):
+            type = "json"
+        elif 0 < self.file_name.lower().find("yaml") or self.file_name.find("yml"):
+            type = "yaml"
+        elif 0 < self.file_name.lower().find("xml"):
+            type = "xml"
+
+        self.file = open(self.file_name)
+        self.convert_to_json(type)
+    
     def convert_to_json(self, n):
         self.print.append("convert_to_json")
-        if n.lower() == "xml":
-            self.print.append(self.tabdash+"XML file type")
-        elif n.lower() == "json":
+        if n.lower() == "json":
             self.print.append(self.tabdash+"JSON file type")
+            self.dataobject = json.load(self.file)
         elif n.lower() == "yml" or n.lower() == "yaml":
             self.print.append(self.tabdash+"YAML file type")
+            self.dataobject = yaml.load(self.file)
+        elif n.lower() == "xml":
+            self.print.append(self.tabdash+"XML file type")
         else:
             self.print.append(self.tabdash+"not suporrted file type")
 
