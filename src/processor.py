@@ -6,11 +6,11 @@ import yaml
 
 data_dir = "../data/"
 # file_name = data_dir + "country.json"
-# file_name = data_dir + "color.json"
+file_name = data_dir + "color.json"
 # file_name = data_dir + "colors.json"
 # file_name = data_dir + "porsche.json"
 # file_name = data_dir + "cars.json"
-file_name = data_dir + "user.yaml"
+# file_name = data_dir + "user.yaml"
 
 class DataObject:
 
@@ -27,7 +27,7 @@ class DataObject:
 
         if 0 < self.file_name.lower().find("json"):
             type = "json"
-        elif 0 < self.file_name.lower().find("yaml") or self.file_name.find("yml"):
+        elif 0 < self.file_name.lower().find("yaml") or 0 < self.file_name.find("yml"):
             type = "yaml"
         elif 0 < self.file_name.lower().find("xml"):
             type = "xml"
@@ -36,12 +36,9 @@ class DataObject:
         self.convert_to_json(type)
     
     def convert_to_json(self, n):
-        self.print.append("convert_to_json")
         if n.lower() == "json":
-            self.print.append(self.tabdash+"JSON file type")
             self.dataobject = json.load(self.file)
         elif n.lower() == "yml" or n.lower() == "yaml":
-            self.print.append(self.tabdash+"YAML file type")
             self.dataobject = yaml.load(self.file)
         elif n.lower() == "xml":
             self.print.append(self.tabdash+"XML file type")
@@ -131,5 +128,3 @@ dao.find("Rover")
 
 dao.printobject(False)
 # dao.printobject(True)
-
-
