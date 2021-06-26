@@ -20,6 +20,8 @@ class DataObject:
     def __init__(self, file, type = None):
         # Testing string variable
         self.count = 0              # items counter
+        self.count_keys = 0         # keys counter
+        self.count_values = 0       # values counter
         self.index = []
         self.print = []             # test string
         self.print.append("DataObject")
@@ -101,11 +103,17 @@ class DataObject:
         elif isinstance(data, dict):
             i = len(data.keys())
             for (k, v) in data.items():
-                self.print.append(self.t(1, "KEY: ") + str(k)) 
+                self.count_keys += 1
+                self.get_key(k)
                 self.get_value(v)
- 
-    def get_value(self, v, k = None):
+
+    def get_key(self, k):
+        self.count_keys += 1
+        self.print.append(self.t(1, "KEY: ") + str(k))
+
+    def get_value(self, v):
         if isinstance(v ,str) or isinstance(v , int):
+            self.count_values += 1
             self.print.append(self.t(1, "-") + "VALUE: " + str(v))
             self.index.append(str(v))
             self.count += 1   
