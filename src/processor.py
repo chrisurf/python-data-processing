@@ -7,8 +7,8 @@ from xml.dom import IndexSizeErr, minidom
 
 
 data_dir = "../data/"
-# file_name = data_dir + "country.json"
-file_name = data_dir + "color.json"
+file_name = data_dir + "country.json"
+# file_name = data_dir + "color.json"
 file_name = data_dir + "colors.json"
 # file_name = data_dir + "porsche.json"
 # file_name = data_dir + "cars.json"
@@ -95,24 +95,23 @@ class DataObject:
     def iterate(self, data):
 
         if isinstance(data, list):
-            for i in range(len(data)):
-                if isinstance(data[i] ,str) or isinstance(data[i] , int):
-                    self.print.append(self.t(2, "-") + "VALUE LIST: " + str(data[i]))
-                    self.index.append(str(data[i]))
-                    self.count += 1
-                else:
-                    self.iterate(data[i])
+            for v in range(len(data)):
+                self.get_value(data[v])
+
         elif isinstance(data, dict):
             i = len(data.keys())
             for (k, v) in data.items():
-                self.print.append(self.t(1) + "KEY DICT: " + str(k)) 
-                if isinstance(v, str):
-                    self.print.append(self.t(1, "-") + "VALUE DICT: " + str(v)) 
-                    self.index.append(str(v))
-                    self.count += 1
-                else:
-                    self.iterate(v)
+                self.print.append(self.t(1, "KEY: ") + str(k)) 
+                self.get_value(v)
  
+    def get_value(self, v, k = None):
+        if isinstance(v ,str) or isinstance(v , int):
+            self.print.append(self.t(1, "-") + "VALUE: " + str(v))
+            self.index.append(str(v))
+            self.count += 1   
+        else:
+            self.iterate(v)    
+
     def count_items(self):
         data = self.dataobject
 
