@@ -41,4 +41,5 @@ A Python data processing handler.
 
 ### Requisites
 * Python 3.8
-
+* pip install pyyaml
+* pip install xml-python

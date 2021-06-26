@@ -3,6 +3,8 @@
 
 import json
 import yaml
+from xml.dom import IndexSizeErr, minidom
+
 
 data_dir = "../data/"
 # file_name = data_dir + "country.json"
@@ -11,6 +13,7 @@ file_name = data_dir + "color.json"
 # file_name = data_dir + "porsche.json"
 # file_name = data_dir + "cars.json"
 # file_name = data_dir + "user.yaml"
+# file_name = data_dir + "sample.xml"
 
 class DataObject:
 
@@ -19,11 +22,9 @@ class DataObject:
         self.count = 0              # items counter
         self.index = []
         self.print = []             # test string
-        self.dash = "- "
-        self.tab = "\t"
-        self.tabdash = "\t- "
         self.print.append("DataObject")
         self.file_name = file
+        self.dataobject = None
 
         if 0 < self.file_name.lower().find("json"):
             type = "json"
@@ -32,44 +33,63 @@ class DataObject:
         elif 0 < self.file_name.lower().find("xml"):
             type = "xml"
 
-        self.file = open(self.file_name)
+        self.data = open(self.file_name)
         self.convert_to_json(type)
-    
+
+    def t(self, t, n = None):
+        tab = ""
+        if isinstance(t, int):
+            for i in range(0, t):
+              tab = tab + "\t"
+        else:
+            print("Not an integer")
+            
+        if isinstance(n, str):
+            tab = tab + n + " "
+
+        return tab
+
+
     def convert_to_json(self, n):
         if n.lower() == "json":
-            self.dataobject = json.load(self.file)
+            self.dataobject = json.load(self.data)
         elif n.lower() == "yml" or n.lower() == "yaml":
-            self.dataobject = yaml.load(self.file)
+            self.dataobject = yaml.load(self.data)
         elif n.lower() == "xml":
-            self.print.append(self.tabdash+"XML file type")
+            self.print.append(self.t(1)+"XML file type")
+            mydoc = minidom.parse(self.data)
+            self.dataobject = mydoc.getElementsByTagName('Category')
+            print(self.dataobject)
         else:
-            self.print.append(self.tabdash+"not suporrted file type")
+            self.print.append(self.t(1)+"not suporrted file type")
 
     def find(self, n):
         self.print.append("find")
+        # currently index only holds values.
+        # TODO: improve index with separated list of keys
         if n in self.index:
-            self.print.append(self.tabdash+ n +" < found in data set.")
+            self.print.append(self.t(1)+ n +" < found in data set.")
         else:
-            self.print.append(self.tabdash+ n + " < not found in data set.")
+            self.print.append(self.t(1)+ n + " < not found in data set.")
 
     def sort(self, n):
         self.print.append("sort")
         if n == True : # true: sort ascending
-            self.print.append(self.tabdash+"sort ascending")
+            self.print.append(self.t(1)+"sort ascending")
         else: # false: sort descending
-            self.print.append(self.tabdash+"sort descending")
+            self.print.append(self.t(1)+"sort descending")
 
     def validate(self, data):
         t = None
         if isinstance(data, dict):
             t = "dict"
-            self.print.append(self.tab + ' >> validate = object is a ' + t)
+            self.print.append(self.t(1) + ' >> validate = object is a ' + t)
         if isinstance(data, list):
             t = "list"
-            self.print.append(self.tab + ' >> validate = object is a ' + t)
+            self.print.append(self.t(1) + ' >> validate = object is a ' + t)
         if isinstance(data, str):
             t = "str"
-            self.print.append(self.tab + ' >> validate = object is a ' + t)
+            self.print.append(self.t(1) + ' >> validate = object is a ' + t)
         return t
 
     def iterate(self, data):
@@ -77,7 +97,7 @@ class DataObject:
         if isinstance(data, list):
             for i in range(len(data)):
                 if isinstance(data[i] ,str) or isinstance(data[i] , int):
-                    self.print.append(self.tabdash + "VALUE LIST: " + str(data[i]))
+                    self.print.append(self.t(2, "-") + "VALUE LIST: " + str(data[i]))
                     self.index.append(str(data[i]))
                     self.count += 1
                 else:
@@ -85,9 +105,9 @@ class DataObject:
         elif isinstance(data, dict):
             i = len(data.keys())
             for (k, v) in data.items():
-                self.print.append(self.tabdash + "KEY DICT: " + str(k)) 
+                self.print.append(self.t(1) + "KEY DICT: " + str(k)) 
                 if isinstance(v, str):
-                    self.print.append(self.tabdash + "VALUE DICT: " + str(v)) 
+                    self.print.append(self.t(1, "-") + "VALUE DICT: " + str(v)) 
                     self.index.append(str(v))
                     self.count += 1
                 else:
@@ -99,7 +119,7 @@ class DataObject:
         if isinstance(data, dict) or isinstance(data, list):
             self.iterate(data)
         else: 
-             self.print.append(self.tab + 'object is NOT a dictionary')     
+             self.print.append(self.t(1) + 'object is NOT a dictionary')     
         return self.count
 
     def count_branch_level(self):
@@ -124,7 +144,7 @@ dao = DataObject(file_name)
 print(dao.count_items())
 
 # dao.printasstr()
-dao.find("Rover")
+dao.find("black")
 
 dao.printobject(False)
 # dao.printobject(True)
