@@ -9,7 +9,7 @@ from xml.dom import IndexSizeErr, minidom
 data_dir = "../data/"
 # file_name = data_dir + "country.json"
 file_name = data_dir + "color.json"
-# file_name = data_dir + "colors.json"
+file_name = data_dir + "colors.json"
 # file_name = data_dir + "porsche.json"
 # file_name = data_dir + "cars.json"
 # file_name = data_dir + "user.yaml"
